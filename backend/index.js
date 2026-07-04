@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 
 const connectDB = require("./config/db");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(limiter);
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
     res.json({

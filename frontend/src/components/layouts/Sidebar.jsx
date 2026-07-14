@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaUsers,
@@ -26,6 +27,14 @@ const menuItems = [
 ];
 
 function Sidebar({ currentPath }) {
+  const navigate=useNavigate();
+  const handleLogout=()=>{
+
+localStorage.removeItem("token");
+
+navigate("/login");
+
+};
   return (
     <aside className="w-full bg-slate-950 text-white lg:w-72 lg:shrink-0">
       <div className="border-b border-slate-800 p-6">
@@ -61,10 +70,19 @@ function Sidebar({ currentPath }) {
       </nav>
 
       <div className="mt-8 border-t border-slate-800 p-4">
-        <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-300 transition hover:bg-red-500/20">
-          <FaSignOutAlt />
-          Logout
-        </button>
+        <button
+
+onClick={handleLogout}
+
+className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-300 transition hover:bg-red-500/20"
+
+>
+
+<FaSignOutAlt/>
+
+Logout
+
+</button>
       </div>
     </aside>
   );

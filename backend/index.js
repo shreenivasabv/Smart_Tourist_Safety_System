@@ -13,6 +13,11 @@ const authRoutes = require("./routes/authRoutes");
 const touristRoutes = require("./routes/touristRoutes");
 const touristDashboardRoutes = require("./routes/touristDashboardRoutes");
 
+const gpsRoutes = require("./routes/Gps/gpsRoutes");
+const zoneRoutes = require("./routes/Gps/zoneRoutes");
+const dashboardRoutes = require("./routes/Gps/dashboardRoutes");
+const startOfflineStatusJob = require("./utils/offlineStatusJob");
+
 const app = express();
 
 // ======================
@@ -53,7 +58,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/tourist-dashboard", touristDashboardRoutes);
 app.use("/api/tourists", touristRoutes);
-
+app.use("/api/gps", gpsRoutes);
+app.use("/api/zones", zoneRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/", (req, res) => {
   res.json({
@@ -103,4 +110,5 @@ app.listen(PORT, async () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 
   await createDefaultAdmin();
+  startOfflineStatusJob();
 });

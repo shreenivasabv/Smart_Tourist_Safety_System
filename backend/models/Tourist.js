@@ -59,11 +59,59 @@ const touristSchema = new mongoose.Schema(
       type: String,
       enum: ["Safe", "Monitoring", "Support Needed"],
       default: "Safe",
-    }
+    },
+
+    currentLocation: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0],
+      },
+    },
+
+    lastSpeedKmh: {
+      type: Number,
+      default: 0,
+    },
+
+    lastSeen: {
+      type: Date,
+      default: null,
+    },
+
+    onlineStatus: {
+      type: String,
+      enum: ["online", "offline"],
+      default: "offline",
+    },
+
+    zoneStatus: {
+      type: String,
+      enum: ["inside", "outside", "unknown"],
+      default: "unknown",
+    },
+
+    currentZone: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Zone",
+      default: null,
+    },
+
+    riskLevel: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "low",
+    },
   },
   {
     timestamps: true,
   }
 );
+
+touristSchema.index({ currentLocation: "2dsphere" });
 
 module.exports = mongoose.model("Tourist", touristSchema);

@@ -15,6 +15,9 @@ import {
   SettingsPage,
 } from "./FeaturePages";
 
+
+
+import TouristDashboard from "../components/Tourists/TouristDashboard";
 function AdminDashboard() {
   const location = useLocation();
   const currentPath = location.pathname.replace(/^\//, "") || "dashboard";
@@ -30,7 +33,7 @@ function AdminDashboard() {
           <div className="mt-6">
             <Routes>
               <Route path="/" element={<DashboardHomePage />} />
-              <Route path="/tourists" element={<TouristsPage />} />
+              <Route path="/tourists" element={<TouristDashboard />} />
               <Route path="/monitoring" element={<MonitoringPage />} />
               <Route path="/incidents" element={<IncidentsPage />} />
               <Route path="/police" element={<PolicePage />} />

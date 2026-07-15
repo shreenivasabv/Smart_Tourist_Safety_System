@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaMapMarkerAlt, FaShieldAlt, FaHospitalAlt, FaChartLine, FaFileAlt, FaCog, FaUserFriends, FaExclamationTriangle, FaUserPlus } from "react-icons/fa";
-import Header from "../components/layouts/Dashboards/Header";
-import DashboardGrid from "../components/layouts/Dashboards/DashboardGrid";
-import RecentAlertsTable from "../components/layouts/Dashboards/RecentAlertsTable";
-import RecentIncidentsTable from "../components/layouts/Dashboards/RecentIncidentsTable";
+import Header from "../components/Dashboards/Header";
+import DashboardGrid from "../components/Dashboards/DashboardGrid";
+import RecentAlertsTable from "../components/Dashboards/RecentAlertsTable";
+import RecentIncidentsTable from "../components/Dashboards/RecentIncidentsTable";
 
 const DEPLOYMENT_AREA = "Pilot Tourist Safety Zone";
 

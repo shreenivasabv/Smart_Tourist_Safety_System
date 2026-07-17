@@ -5,7 +5,6 @@ import Sidebar from "../components/layouts/Sidebar";
 import TopNavbar from "../components/layouts/TopNavbar";
 import {
   DashboardHomePage,
-  TouristsPage,
   MonitoringPage,
   IncidentsPage,
   PolicePage,

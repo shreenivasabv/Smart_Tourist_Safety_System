@@ -12,11 +12,13 @@ const Admin = require("./models/Admin");
 const authRoutes = require("./routes/authRoutes");
 const touristRoutes = require("./routes/touristRoutes");
 const touristDashboardRoutes = require("./routes/touristDashboardRoutes");
+const alertRoutes = require("./routes/alertRoutes");
 
 const gpsRoutes = require("./routes/Gps/gpsRoutes");
 const zoneRoutes = require("./routes/Gps/zoneRoutes");
 const dashboardRoutes = require("./routes/Gps/dashboardRoutes");
 const startOfflineStatusJob = require("./utils/offlineStatusJob");
+const startTouristAlertJob = require("./utils/touristAlertJob");
 
 const app = express();
 
@@ -44,7 +46,7 @@ app.use(
 
 app.use(
   rateLimit({
-    windowMs: 15 * 60 * 1000,
+    windowMs: 10 * 1000,
     max: 100,
   })
 );
@@ -58,6 +60,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/tourist-dashboard", touristDashboardRoutes);
 app.use("/api/tourists", touristRoutes);
+app.use("/api/alerts", alertRoutes);
 app.use("/api/gps", gpsRoutes);
 app.use("/api/zones", zoneRoutes);
 app.use("/api/dashboard", dashboardRoutes);
@@ -111,4 +114,5 @@ app.listen(PORT, async () => {
 
   await createDefaultAdmin();
   startOfflineStatusJob();
+  startTouristAlertJob();
 });

@@ -1,0 +1,111 @@
+export const TOURIST_REGION_PRESETS = [
+  {
+    id: "hampi",
+    name: "Hampi",
+    subtitle: "UNESCO heritage zone",
+    center: [15.335, 76.46],
+    zoom: 13,
+    boundary: [
+      [15.3535, 76.4235],
+      [15.3645, 76.4445],
+      [15.3605, 76.4765],
+      [15.3445, 76.4975],
+      [15.3225, 76.5035],
+      [15.3055, 76.4935],
+      [15.2955, 76.4705],
+      [15.2975, 76.4435],
+      [15.3125, 76.4245],
+      [15.3365, 76.4175],
+    ],
+    riskZones: [
+      {
+        id: "hampi-river-edge",
+        name: "River Edge Risk Zone",
+        type: "restricted",
+        riskLevel: "high",
+        coordinates: [
+          [15.347, 76.43],
+          [15.357, 76.444],
+          [15.353, 76.456],
+          [15.341, 76.449],
+        ],
+      },
+      {
+        id: "hampi-rocky-cluster",
+        name: "Rocky Trail Alert Zone",
+        type: "sensitive",
+        riskLevel: "medium",
+        coordinates: [
+          [15.317, 76.468],
+          [15.326, 76.482],
+          [15.315, 76.493],
+          [15.304, 76.479],
+        ],
+      },
+    ],
+  },
+  {
+    id: "mysuru-palace",
+    name: "Mysuru Palace",
+    subtitle: "Urban heritage district",
+    center: [12.3051, 76.6551],
+    zoom: 14,
+    boundary: [
+      [12.314, 76.643],
+      [12.316, 76.657],
+      [12.311, 76.669],
+      [12.301, 76.671],
+      [12.294, 76.664],
+      [12.293, 76.649],
+      [12.3, 76.64],
+      [12.309, 76.639],
+    ],
+    riskZones: [
+      {
+        id: "mysuru-traffic",
+        name: "Heavy Traffic Zone",
+        type: "restricted",
+        riskLevel: "high",
+        coordinates: [
+          [12.309, 76.65],
+          [12.312, 76.659],
+          [12.306, 76.664],
+          [12.301, 76.656],
+        ],
+      },
+    ],
+  },
+  {
+    id: "goa-old-city",
+    name: "Old Goa",
+    subtitle: "Coastal heritage circuit",
+    center: [15.5006, 73.9115],
+    zoom: 13,
+    boundary: [
+      [15.514, 73.892],
+      [15.52, 73.909],
+      [15.515, 73.929],
+      [15.501, 73.938],
+      [15.487, 73.934],
+      [15.48, 73.918],
+      [15.483, 73.899],
+      [15.497, 73.889],
+    ],
+    riskZones: [
+      {
+        id: "goa-riverbank",
+        name: "Riverbank Restriction",
+        type: "restricted",
+        riskLevel: "high",
+        coordinates: [
+          [15.507, 73.899],
+          [15.514, 73.908],
+          [15.507, 73.917],
+          [15.499, 73.91],
+        ],
+      },
+    ],
+  },
+];
+
+export const DEFAULT_TOURIST_REGION = TOURIST_REGION_PRESETS[0];

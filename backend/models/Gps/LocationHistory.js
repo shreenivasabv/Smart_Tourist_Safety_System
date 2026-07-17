@@ -21,6 +21,11 @@ const locationHistorySchema = new mongoose.Schema(
     },
     speedKmh: { type: Number, default: 0 },
     accuracy: { type: Number, default: null }, // meters, optional from device GPS
+    source: { type: String, default: "manual" },
+    deviceTimestamp: { type: Date, default: null },
+    batteryLevel: { type: Number, default: null },
+    heading: { type: Number, default: null },
+    altitude: { type: Number, default: null },
     zoneStatusAtPoint: {
       type: String,
       enum: ['inside', 'outside', 'unknown'],

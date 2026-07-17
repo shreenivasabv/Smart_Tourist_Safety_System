@@ -89,6 +89,21 @@ const touristSchema = new mongoose.Schema(
       default: "offline",
     },
 
+    lastLocationSource: {
+      type: String,
+      default: "manual",
+    },
+
+    lastLocationAccuracy: {
+      type: Number,
+      default: null,
+    },
+
+    lastDeviceTimestamp: {
+      type: Date,
+      default: null,
+    },
+
     zoneStatus: {
       type: String,
       enum: ["inside", "outside", "unknown"],
@@ -105,6 +120,33 @@ const touristSchema = new mongoose.Schema(
       type: String,
       enum: ["low", "medium", "high"],
       default: "low",
+    },
+
+    deviceToken: {
+      type: String,
+      default: "",
+    },
+
+    devicePlatform: {
+      type: String,
+      enum: ["android", "ios", "web", "unknown"],
+      default: "unknown",
+    },
+
+    preferredAlertChannel: {
+      type: String,
+      enum: ["email", "push", "both"],
+      default: "email",
+    },
+
+    deviceLastRegisteredAt: {
+      type: Date,
+      default: null,
+    },
+
+    lastAlertSentAt: {
+      type: Date,
+      default: null,
     },
   },
   {

@@ -10,6 +10,7 @@ The current codebase includes:
 - live GPS location ingestion endpoints for future mobile apps
 - geofence zone APIs
 - monitoring dashboards and map overlays
+- incident logging and response workflow
 - email alert support with a configurable scheduled alert job
 
 ## Architecture
@@ -70,6 +71,7 @@ Smart_Tourist_Safety_System/
 - Geofence evaluation for inside/outside risk detection
 - Scheduled email alerts for high-risk or out-of-boundary tourists
 - Device-token registration for future Android push integration
+- Incident response workflow: create, prioritize, acknowledge, respond to, and resolve incidents
 
 ## Important Design Note
 
@@ -210,6 +212,8 @@ Password: admin123
 - `GET /api/gps/status/:touristId`
 - `GET /api/gps/all-current`
 
+The monitoring screen uses `GET /api/dashboard/tourists-live` to refresh current device positions. A location update records the source (for example, `android-app`) and the map displays only valid device-reported coordinates.
+
 ### Zones and Geofencing
 
 - `POST /api/zones`
@@ -244,6 +248,29 @@ Password: admin123
   "preferredAlertChannel": "both"
 }
 ```
+
+### Incidents
+
+- `GET /api/incidents` — list incidents; supports optional `status`, `priority`, and `limit` query parameters
+- `GET /api/incidents/summary` — active, critical, and resolved-today counts
+- `POST /api/incidents` — create an incident
+- `PATCH /api/incidents/:id` — update incident details or response status
+
+#### Create incident payload
+
+```json
+{
+  "tourist": "tourist_mongo_id",
+  "type": "medical",
+  "priority": "high",
+  "title": "Assistance requested near east gate",
+  "description": "Tourist reported dizziness and needs a medical check.",
+  "locationLabel": "East Gate",
+  "reportedBy": "Control room"
+}
+```
+
+`tourist` is optional. If a linked tourist has a valid current GPS fix, that location is copied into the new incident as a snapshot. Creating or updating an incident does not change tourist records or location history.
 
 #### Manual alert payload
 
@@ -296,8 +323,8 @@ The monitoring map:
 - draws protected area boundaries
 - draws risk or restricted zones
 - shows all tourists on the map
-- uses live GPS if available
-- falls back to estimated placement within the selected region when no live GPS exists yet
+- shows only valid device-reported GPS positions
+- labels each marker with its location source and last-seen time
 
 ## Current Data Models
 
@@ -335,6 +362,16 @@ Includes:
 - risk level
 - zone type
 - active state
+
+### Incident
+
+Includes:
+
+- unique incident reference
+- optional tourist reference and tourist-name snapshot
+- type, priority, and response status
+- description, landmark, and optional GeoJSON location snapshot
+- reporter, assignee, resolution note, and resolution time
 
 ## Frontend Notes
 

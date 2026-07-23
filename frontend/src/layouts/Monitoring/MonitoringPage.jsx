@@ -126,7 +126,10 @@ function MonitoringPage() {
             { label: "Planned marker points", value: String(stats.plannedMarkerPoints) },
             { label: "Sensitive route segments", value: String(stats.sensitiveRouteSegments) },
             { label: "Geo-fence rules planned", value: String(stats.geoFenceRulesPlanned) },
-            { label: "Tourists shown on map", value: String(tourists.length) },
+            { label: "Tourists reporting a device location", value: String(tourists.filter((tourist) => {
+              const [lng, lat] = tourist?.currentLocation?.coordinates || [];
+              return Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0);
+            }).length) },
           ].map((item) => (
             <div key={item.label} className="rounded-xl border border-slate-200 p-4">
               <p className="text-sm text-slate-500">{item.label}</p>

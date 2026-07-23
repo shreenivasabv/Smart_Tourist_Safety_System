@@ -241,7 +241,7 @@ exports.getAllCurrentLocations = async (req, res) => {
   try {
     const tourists = await Tourist.find({
       "currentLocation.coordinates.0": { $ne: 0 },
-    }).select("fullName currentLocation lastSpeedKmh lastSeen onlineStatus zoneStatus currentZone riskLevel");
+    }).select("fullName currentLocation lastSpeedKmh lastSeen onlineStatus zoneStatus currentZone riskLevel lastLocationSource lastLocationAccuracy lastDeviceTimestamp");
 
     const data = tourists.map((t) => ({
       ...t.toObject(),

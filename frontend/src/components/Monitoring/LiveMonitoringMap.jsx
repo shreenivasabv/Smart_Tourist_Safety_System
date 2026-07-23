@@ -28,18 +28,6 @@ function createTouristIcon(riskLevel, onlineStatus) {
   });
 }
 
-function createFallbackTouristCoordinates(tourist, focusRegion, index) {
-  const baseCenter = focusRegion?.center || DEFAULT_TOURIST_REGION.center;
-  const source = tourist?._id || tourist?.email || tourist?.fullName || `tourist-${index}`;
-  const hash = source.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const radius = 0.004 + (hash % 6) * 0.0015;
-  const angle = ((hash * 37) % 360) * (Math.PI / 180);
-  const lat = baseCenter[0] + Math.sin(angle) * radius;
-  const lng = baseCenter[1] + Math.cos(angle) * radius;
-
-  return [lng, lat];
-}
-
 function createBoundaryZone(focusRegion) {
   if (!focusRegion?.boundary?.length) {
     return null;
@@ -105,25 +93,19 @@ function LiveMonitoringMap({ tourists, zones, focusRegion }) {
 
   const normalizedTourists = useMemo(
     () =>
-      tourists.map((tourist, index) => {
+      tourists.map((tourist) => {
         const [lng, lat] = tourist?.currentLocation?.coordinates || [];
         const hasLiveLocation = Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0);
-        const resolvedCoordinates = hasLiveLocation
-          ? [lng, lat]
-          : createFallbackTouristCoordinates(tourist, focusRegion, index);
-
-        return {
+        return hasLiveLocation ? {
           ...tourist,
           currentLocation: {
             ...(tourist.currentLocation || { type: "Point" }),
-            coordinates: resolvedCoordinates,
+            coordinates: [lng, lat],
           },
-          hasLiveLocation,
-          displayZoneStatus: hasLiveLocation ? tourist.zoneStatus : "pending-live-fix",
-          displayOnlineStatus: hasLiveLocation ? tourist.onlineStatus : "estimated",
-        };
-      }),
-    [focusRegion, tourists]
+          hasLiveLocation: true,
+        } : null;
+      }).filter(Boolean),
+    [tourists]
   );
 
   const normalizedZones = useMemo(
@@ -202,14 +184,14 @@ function LiveMonitoringMap({ tourists, zones, focusRegion }) {
               <Popup>
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold text-slate-800">{tourist.fullName}</p>
-                  <p className="text-slate-600">Status: {tourist.displayOnlineStatus}</p>
-                  <p className="text-slate-600">Zone status: {tourist.displayZoneStatus}</p>
+                  <p className="text-slate-600">Status: {tourist.onlineStatus}</p>
+                  <p className="text-slate-600">Zone status: {tourist.zoneStatus}</p>
                   <p className="text-slate-600">Risk: {tourist.riskLevel}</p>
                   <p className="text-slate-600">Speed: {Number(tourist.lastSpeedKmh || 0).toFixed(1)} km/h</p>
                   <p className="text-slate-600">Lat: {lat.toFixed(6)}</p>
                   <p className="text-slate-600">Lng: {lng.toFixed(6)}</p>
                   <p className="text-slate-600">
-                    Source: {tourist.hasLiveLocation ? "Live GPS update" : `Estimated inside ${focusRegion?.name || DEFAULT_TOURIST_REGION.name}`}
+                    Source: {tourist.lastLocationSource || "Device GPS update"}
                   </p>
                   <p className="text-slate-600">
                     Last seen: {tourist.lastSeen ? new Date(tourist.lastSeen).toLocaleTimeString() : "No signal"}
@@ -231,7 +213,7 @@ function LiveMonitoringMap({ tourists, zones, focusRegion }) {
 
       {!normalizedTourists.length && !normalizedZones.length ? (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white/75 text-sm text-slate-500">
-          No live tourist coordinates or active zones are available yet.
+          No device-reported tourist coordinates or active zones are available yet.
         </div>
       ) : null}
     </div>

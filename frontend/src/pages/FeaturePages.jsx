@@ -8,6 +8,7 @@ import PageShell from "../components/common/PageShell";
 import TouristsPage from "../layouts/Tourists/TouristsPage";
 import MonitoringPage from "../layouts/Monitoring/MonitoringPage";
 import { DEPLOYMENT_AREA } from "../constants";
+import IncidentsWorkspace from "../components/Incidents/IncidentsWorkspace";
 
 function DashboardHomePage() {
   return (
@@ -24,22 +25,8 @@ function DashboardHomePage() {
 
 function IncidentsPage() {
   return (
-    <PageShell title="Incident Response" subtitle="Manage open incidents, escalation, and emergency follow-ups.">
-      <div className="grid gap-4 md:grid-cols-3">
-        {[
-          { title: "Open cases", value: "12" },
-          { title: "Critical", value: "3" },
-          { title: "Resolved today", value: "8" },
-        ].map((item) => (
-          <div key={item.title} className="rounded-xl border border-slate-200 p-4">
-            <p className="text-sm text-slate-500">{item.title}</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-800">{item.value}</p>
-          </div>
-        ))}
-      </div>
-      <div className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-        Latest escalation: Medical emergency near the Lake View Trail requires hospital coordination.
-      </div>
+    <PageShell title="Incident Response" subtitle="Create, prioritize, acknowledge, and resolve live safety incidents.">
+      <IncidentsWorkspace />
     </PageShell>
   );
 }

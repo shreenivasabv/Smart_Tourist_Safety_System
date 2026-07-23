@@ -129,7 +129,7 @@ exports.getLiveStats = async (req, res) => {
 exports.getTouristsLive = async (req, res) => {
   try {
     const tourists = await Tourist.find({}).select(
-      "fullName currentLocation lastSpeedKmh lastSeen zoneStatus currentZone riskLevel"
+      "fullName currentLocation lastSpeedKmh lastSeen zoneStatus currentZone riskLevel lastLocationSource lastLocationAccuracy lastDeviceTimestamp"
     );
 
     const data = tourists.map((t) => ({

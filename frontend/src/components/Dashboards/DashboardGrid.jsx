@@ -1,115 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { getAllTourists } from "../../services/touristService";
+import { useCallback, useEffect, useState } from "react";
+import { FaBell, FaExclamationTriangle, FaSearchLocation, FaShieldAlt, FaSyncAlt, FaUserCheck, FaUserSecret, FaUsers } from "react-icons/fa";
 import DashboardCard from "./DashboardCard";
-
-import {
-  FaUsers,
-  FaUserCheck,
-  FaShieldAlt,
-  FaBell,
-  FaUserSecret,
-  FaExclamationTriangle,
-  FaSearchLocation,
-  FaGavel,
-  FaHospital
-} from "react-icons/fa";
+import { getOperationsSnapshot } from "../../services/operationsService";
 
 function DashboardGrid() {
-  const [registrationCount, setRegistrationCount] = useState(0);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllTourists();   // now returns res.data
-        console.log("Tourists API response:", data);
-        setRegistrationCount(data.tourists?.length || 0);
-      } catch (err) {
-        console.error("Failed to fetch tourists:", err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const dashboardData = [
-    {
-      title: "Pilot Area Registrations",
-      value: registrationCount,
-      description: "+126 this week",
-      icon: <FaUsers />,
-      color: "border-blue-500",
-    },
-    {
-      title: "Active Visitors On Site",
-      value: "824",
-      description: "66% currently checked in",
-      icon: <FaUserCheck />,
-      color: "border-green-500",
-    },
-    {
-      title: "Visitors in Covered Zones",
-      value: "790",
-      description: "Ready for future geo-fence coverage",
-      icon: <FaShieldAlt />,
-      color: "border-cyan-500",
-    },
-    {
-      title: "SOS Alerts Today",
-      value: "5",
-      description: "2 pending escalation",
-      icon: <FaBell />,
-      color: "border-red-500",
-    },
-    {
-      title: "Visitors Requiring Follow-Up",
-      value: "4",
-      description: "High priority cases",
-      icon: <FaUserSecret />,
-      color: "border-yellow-500",
-    },
-    {
-      title: "Incident Reports",
-      value: "9",
-      description: "3 under investigation",
-      icon: <FaExclamationTriangle />,
-      color: "border-orange-500",
-    },
-    {
-      title: "Risk Signals Logged",
-      value: "8",
-      description: "Prepared for AI prediction",
-      icon: <FaSearchLocation />,
-      color: "border-purple-500",
-    },
-    {
-      title: "Police Coordination Cases",
-      value: "6",
-      description: "4 active",
-      icon: <FaGavel />,
-      color: "border-indigo-500",
-    },
-    {
-      title: "Medical Response Partners",
-      value: "3",
-      description: "All online",
-      icon: <FaHospital />,
-      color: "border-pink-500",
-    },
+  const [snapshot, setSnapshot] = useState(null);
+  const [error, setError] = useState("");
+  const load = useCallback(async () => { try { setError(""); setSnapshot(await getOperationsSnapshot()); } catch { setError("Live dashboard data is unavailable."); } }, []);
+  useEffect(() => { load(); }, [load]);
+  if (!snapshot) return <div className="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500">{error || "Loading live dashboard…"}</div>;
+  const { stats, incidents } = snapshot;
+  const active = incidents.filter((item) => !["resolved", "closed"].includes(item.status));
+  const cards = [
+    { title: "Registered tourists", value: stats.totalTourists, description: "All visitor registrations", Icon: FaUsers, color: "border-blue-500" },
+    { title: "Active visitors", value: stats.activeTourists, description: "Location received within 5 minutes", Icon: FaUserCheck, color: "border-emerald-500" },
+    { title: "Inside protected zones", value: stats.insideSafeZone, description: `${stats.outsideSafeZone} outside safe zone`, Icon: FaShieldAlt, color: "border-cyan-500" },
+    { title: "Open safety alerts", value: active.length, description: "Incidents awaiting closure", Icon: FaBell, color: "border-rose-500" },
+    { title: "High-risk visitors", value: stats.riskLevel.high, description: "Requires follow-up", Icon: FaUserSecret, color: "border-amber-500" },
+    { title: "Critical incidents", value: active.filter((item) => item.priority === "critical").length, description: "Escalate immediately", Icon: FaExclamationTriangle, color: "border-orange-500" },
+    { title: "Risk signals", value: stats.riskLevel.medium + stats.riskLevel.high, description: "Medium and high assessments", Icon: FaSearchLocation, color: "border-purple-500" },
+    { title: "Active geofences", value: stats.geoFenceRulesPlanned, description: `${stats.sensitiveRouteSegments} sensitive zones`, Icon: FaShieldAlt, color: "border-indigo-500" },
   ];
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {dashboardData.map((card, index) => (
-        <DashboardCard
-          key={index}
-          title={card.title}
-          value={card.value}
-          description={card.description}
-          icon={card.icon}
-          color={card.color}
-        />
-      ))}
-    </div>
-  );
+  return <section><div className="mb-3 flex justify-end"><button onClick={load} className="inline-flex items-center gap-2 text-sm font-medium text-sky-700 hover:text-sky-800"><FaSyncAlt /> Refresh live data</button></div><div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">{cards.map(({ Icon, ...card }) => <DashboardCard key={card.title} {...card} icon={<Icon />} />)}</div></section>;
 }
 
 export default DashboardGrid;

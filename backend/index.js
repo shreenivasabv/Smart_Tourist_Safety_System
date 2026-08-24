@@ -14,6 +14,7 @@ const touristRoutes = require("./routes/touristRoutes");
 const touristDashboardRoutes = require("./routes/touristDashboardRoutes");
 const alertRoutes = require("./routes/alertRoutes");
 const incidentRoutes = require("./routes/incidentRoutes");
+const responseUnitRoutes = require("./routes/responseUnitRoutes");
 
 const gpsRoutes = require("./routes/Gps/gpsRoutes");
 const zoneRoutes = require("./routes/Gps/zoneRoutes");
@@ -63,6 +64,7 @@ app.use("/api/tourist-dashboard", touristDashboardRoutes);
 app.use("/api/tourists", touristRoutes);
 app.use("/api/alerts", alertRoutes);
 app.use("/api/incidents", incidentRoutes);
+app.use("/api/response-units", responseUnitRoutes);
 app.use("/api/gps", gpsRoutes);
 app.use("/api/zones", zoneRoutes);
 app.use("/api/dashboard", dashboardRoutes);

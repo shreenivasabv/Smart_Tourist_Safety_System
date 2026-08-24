@@ -6,56 +6,32 @@ const API = axios.create({
 
 
 export const registerTourist = async (touristData) => {
-    try {
-        const response = await API.post("/", touristData);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+    const response = await API.post("/", touristData);
+    return response.data;
 };
 
 export const getAllTourists = async () => {
-    try {
-        const response = await API.get("/");
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+    const response = await API.get("/");
+    return response.data;
 };
 
 export const getTouristById = async (id) => {
-    try {   
-        const response = await API.get(`/${id}`);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+    const response = await API.get(`/${id}`);
+    return response.data;
 };
 
 export const updateTourist = async (id, updatedData) => {
-    try {       
-        const response = await API.put(`/${id}`, updatedData);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+    const response = await API.put(`/${id}`, updatedData);
+    return response.data;
 };
 
 export const deleteTourist = async (id) => {
-    try {
-        const response = await API.delete(`/${id}`);        
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+    const response = await API.delete(`/${id}`);
+    return response.data;
 };
 
 
 export const getDashboardStats = async () => {
-    try {
-        const response = await API.get("/dashboard");
-        return response.data;   
-    } catch (error) {
-        throw error;
-    }
+    const response = await API.get("/dashboard");
+    return response.data;
 };

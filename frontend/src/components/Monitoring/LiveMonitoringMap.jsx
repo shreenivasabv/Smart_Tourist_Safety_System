@@ -58,7 +58,7 @@ function createPresetRiskZones(focusRegion) {
   }));
 }
 
-function createRegionCenterIcon(regionName) {
+function createRegionCenterIcon() {
   return L.divIcon({
     className: "tourist-marker-wrapper",
     html: `

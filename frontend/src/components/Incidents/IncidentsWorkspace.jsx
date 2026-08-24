@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaCheck, FaExclamationTriangle, FaPlus, FaSave } from "react-icons/fa";
 import { createIncident, getIncidentSummary, getIncidents, updateIncident } from "../../services/incidentService";
 import { getAllTourists } from "../../services/touristService";
@@ -20,7 +20,7 @@ function IncidentsWorkspace() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
 
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       setLoading(true);
       const [incidentResult, summaryResult, touristResult] = await Promise.all([getIncidents(statusFilter ? { status: statusFilter } : undefined), getIncidentSummary(), getAllTourists()]);
@@ -30,9 +30,9 @@ function IncidentsWorkspace() {
     } catch (error) {
       setMessage(error.response?.data?.message || "Unable to load incident data.");
     } finally { setLoading(false); }
-  };
+  }, [statusFilter]);
 
-  useEffect(() => { load(); }, [statusFilter]);
+  useEffect(() => { load(); }, [load]);
 
   const activeTourists = useMemo(() => tourists.filter((tourist) => tourist._id), [tourists]);
   const onSubmit = async (event) => {

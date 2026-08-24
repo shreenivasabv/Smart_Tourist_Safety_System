@@ -31,7 +31,7 @@ function Login() {
       localStorage.setItem("token", res.data.token);
 
       navigate("/");
-    } catch (err) {
+    } catch {
       setError("Invalid Email or Password");
     }
   };

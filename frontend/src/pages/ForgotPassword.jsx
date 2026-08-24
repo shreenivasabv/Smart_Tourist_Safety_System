@@ -18,7 +18,7 @@ function ForgotPassword() {
 
       alert("Reset Link Sent Successfully");
 
-    }catch(err){
+    }catch{
 
       alert("Email Not Found");
 

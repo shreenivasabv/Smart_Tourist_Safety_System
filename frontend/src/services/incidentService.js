@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+import API from "./apiClient";
 
 export const getIncidents = async (params) => (await API.get("/incidents", { params })).data;
 export const getIncidentSummary = async () => (await API.get("/incidents/summary")).data;

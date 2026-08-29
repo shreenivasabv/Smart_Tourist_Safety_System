@@ -1,37 +1,21 @@
-const jwt=require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
-module.exports=(req,res,next)=>{
+module.exports = (req, res, next) => {
+  const authorization = req.headers.authorization;
 
-const token=req.headers.authorization;
+  if (!authorization) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
-if(!token){
+  const [scheme, token] = authorization.split(" ");
+  if (scheme !== "Bearer" || !token) {
+    return res.status(401).json({ message: "Authorization header must use Bearer <token>" });
+  }
 
-return res.status(401).json({
-
-message:"Unauthorized"
-
-});
-
-}
-
-try{
-
-const decoded=jwt.verify(token,process.env.JWT_SECRET);
-
-req.user=decoded;
-
-next();
-
-}
-
-catch(err){
-
-res.status(401).json({
-
-message:"Invalid Token"
-
-});
-
-}
-
-}
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    return next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
+};

@@ -36,6 +36,12 @@ async function persistLocationUpdate({
     throw error;
   }
 
+  if (parsedLatitude < -90 || parsedLatitude > 90 || parsedLongitude < -180 || parsedLongitude > 180) {
+    const error = new Error("latitude must be between -90 and 90, and longitude must be between -180 and 180");
+    error.statusCode = 400;
+    throw error;
+  }
+
   const newCoords = [parsedLongitude, parsedLatitude];
   const now = new Date();
   const parsedDeviceTimestamp = deviceTimestamp ? new Date(deviceTimestamp) : null;

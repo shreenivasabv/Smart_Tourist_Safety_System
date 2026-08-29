@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+import API from "../../services/apiClient";
 
 export default function SystemSettings() {
   const [capabilities, setCapabilities] = useState(null); const [message, setMessage] = useState("");

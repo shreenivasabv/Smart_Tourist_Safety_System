@@ -1,16 +1,14 @@
-import axios from "axios";
-
-const API="http://localhost:5000/api/auth";
+import API from "./apiClient";
 
 export const login=(data)=>{
 
-return axios.post(`${API}/login`,data);
+return API.post("/auth/login", data);
 
 };
 
 export const forgotPassword=(email)=>{
 
-return axios.post(`${API}/forgot-password`,{
+return API.post("/auth/forgot-password",{
 
 email
 
@@ -20,7 +18,7 @@ email
 
 export const resetPassword=(token,password)=>{
 
-return axios.post(`${API}/reset-password/${token}`,{
+return API.post(`/auth/reset-password/${token}`,{
 
 password
 

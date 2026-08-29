@@ -1,37 +1,35 @@
-import axios from "axios";
+import API from "./apiClient";
 
-const API = axios.create({
-    baseURL: "http://localhost:5000/api/tourists",      
-});
+const BASE_PATH = "/tourists";
 
 
 export const registerTourist = async (touristData) => {
-    const response = await API.post("/", touristData);
+    const response = await API.post(BASE_PATH, touristData);
     return response.data;
 };
 
 export const getAllTourists = async () => {
-    const response = await API.get("/");
+    const response = await API.get(BASE_PATH);
     return response.data;
 };
 
 export const getTouristById = async (id) => {
-    const response = await API.get(`/${id}`);
+    const response = await API.get(`${BASE_PATH}/${id}`);
     return response.data;
 };
 
 export const updateTourist = async (id, updatedData) => {
-    const response = await API.put(`/${id}`, updatedData);
+    const response = await API.put(`${BASE_PATH}/${id}`, updatedData);
     return response.data;
 };
 
 export const deleteTourist = async (id) => {
-    const response = await API.delete(`/${id}`);
+    const response = await API.delete(`${BASE_PATH}/${id}`);
     return response.data;
 };
 
 
 export const getDashboardStats = async () => {
-    const response = await API.get("/dashboard");
+    const response = await API.get("/tourist-dashboard");
     return response.data;
 };

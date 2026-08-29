@@ -1,4 +1,5 @@
 const express = require("express");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -15,6 +16,8 @@ updateTourist,
 deleteTourist,
 
 } = require("../controllers/touristController");
+
+router.use(authMiddleware);
 
 router.post("/", registerTourist);
 

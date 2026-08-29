@@ -18,6 +18,12 @@ const adminSchema = new mongoose.Schema(
       required: true,
     },
 
+    role: {
+      type: String,
+      enum: ["super-admin", "control-room-operator", "field-responder"],
+      default: "control-room-operator",
+    },
+
     resetToken: {
       type: String,
     },

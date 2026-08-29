@@ -1,8 +1,4 @@
-import axios from "axios";
-
-const API = axios.create({
-  baseURL: "http://localhost:5000/api",
-});
+import API from "./apiClient";
 
 export const getMonitoringStats = async () => {
   const response = await API.get("/dashboard/stats");

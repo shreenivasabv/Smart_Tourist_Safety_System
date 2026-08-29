@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+import API from "./apiClient";
 
 export const getOperationsSnapshot = async () => {
   const [stats, incidents, tourists] = await Promise.all([

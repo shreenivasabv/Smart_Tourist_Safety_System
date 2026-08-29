@@ -404,6 +404,3 @@ The repo cleanup in this pass removed:
 ## License
 
 This project is currently suitable for demo, academic, and prototype use. Before production use, add stronger authentication, auditing, secure secrets management, device auth, and deployment hardening.
-
-
-Hi#
